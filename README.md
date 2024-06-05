@@ -55,7 +55,18 @@ Imports
     from sklearn.preprocessing import StandardScaler
 
 
-Using clustering find the best value for k using scaled data
+### Using clustering find the best value for k using scaled data
+
+    # Create a list with the number of k-values from 1 to 11
+    k_scaled = list(range(1, 11))
+
+    # Create an empty list to store the inertia values
+    inertia_scaled = []
+
+    for i in k_scaled:
+    model = KMeans(n_clusters=i, random_state=0)
+    model.fit(un_sup_df_scaled_new)
+    inertia_scaled.append(model.inertia_)
 
 
 

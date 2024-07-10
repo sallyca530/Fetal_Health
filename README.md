@@ -8,8 +8,7 @@ This project tackles the crucial challenge of reducing preventable child mortali
 Cardiotocograms (CTGs) are a cost-effective and widely available tool for fetal health assessment. CTGs monitor fetal heart rate (FHR), fetal movement, uterine contractions, and other vital signs, empowering healthcare professionals to make informed decisions and potentially prevent child and maternal mortality.
 
 Data Exploration:
-This dataset offers 2126 records containing features extracted from CTG exams. These features were meticulously classified into three categories by a panel of three expert obstetricians: Normal, Suspect, 
-Pathological
+This dataset offers 2126 records containing features extracted from CTG exams. These features were meticulously classified into three categories by a panel of three expert obstetricians: Normal, Suspect, Pathological
 
 ## Exploratory Data Analysis
 
@@ -68,9 +67,54 @@ Imports
     model.fit(un_sup_df_scaled_new)
     inertia_scaled.append(model.inertia_)
 
+![](images/elbow_curve.png) 
 
+**k = 4 seems to be the best fit for this model**
+
+### Cluster fetal health with K-means using the scaled Data
+
+    # Initialize the K-Means model using the best value for k
+    model = KMeans(n_clusters=4)
+
+    # Fit the K-Means model using the scaled data
+    model.fit(un_sup_df_scaled_new)
+
+    # Predict the clusters to group the fetal health using the scaled data
+    clusters_k4 = model.predict(un_sup_df_scaled_new)
+
+    new_df.hvplot.scatter(
+        x = "baseline value", y = "uterine_contractions", by = "cluster", hover_cols = ["fetal_health"], title = "Fetal Health Clusters") 
+
+![](images/Fetal_health_clusters.png) 
+
+### Optimize Clusters with Principal Component Analysis.
+
+    # Create a PCA model instance and set `n_components=3`.
+    pca = PCA(n_components=3)
+
+    # Use the PCA model with `fit_transform` to reduce to 
+    # three principal components.
+    un_pca_data = pca.fit_transform(un_sup_df_scaled)
+
+### Retrieve the explained variance to determine how much information can be attributed to each principal component.
+
+    pca.explained_variance_ratio_
+
+    Output: array([0.27553613, 0.16673811, 0.10405716])
+
+### Since the variance is so low, around 59%, other machine learning tools should be used.
 
 ## Supervised Learning
+
+Create the labels set (y)  from the “fetal_health” column, and then create the features (X) DataFrame from the remaining columns.
+
+    # Separate the y variable, the labels
+    y = df["fetal_health"]
+
+    # Separate the X variable, the features
+    X = df.drop(columns="fetal_health")
+
+
 
 ## Deep Learning and Optimizations
 

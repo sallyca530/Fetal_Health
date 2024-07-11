@@ -2,13 +2,12 @@
 
 ## Overview
 
-Improving Fetal Health with Machine Learning: Analyzing Cardiotocogram (CTG) Data
-This project tackles the crucial challenge of reducing preventable child mortality.
+Improving Fetal Health with Machine Learning: Analyzing Cardiotocogram (CTG) Data. This project tackles the crucial challenge of reducing preventable child mortality.
 
 Cardiotocograms (CTGs) are a cost-effective and widely available tool for fetal health assessment. CTGs monitor fetal heart rate (FHR), fetal movement, uterine contractions, and other vital signs, empowering healthcare professionals to make informed decisions and potentially prevent child and maternal mortality.
 
 Data Exploration:
-This dataset offers 2126 records containing features extracted from CTG exams. These features were meticulously classified into three categories by a panel of three expert obstetricians: Normal, Suspect, Pathological
+This dataset offers 2126 records containing features extracted from CTG exams. These features were meticulously classified into three categories by a panel of three expert obstetricians: Normal, Suspect, Pathological.
 
 ## Exploratory Data Analysis
 

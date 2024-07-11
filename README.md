@@ -236,6 +236,110 @@ Create a method that creates a new Sequential model with hyperparameter options
 
         return nn_model
 
+Import the kerastuner library
+
+    tuner = kt.Hyperband(
+        create_model,
+        objective="val_accuracy",
+        max_epochs=20,
+        hyperband_iterations=2)
+
+Run the kerastuner search for best hyperparameters 
+
+    tuner.search(X_train_scaled, y_train, epochs=20, validation_data=(X_test_scaled, y_test))
+
+    Output:
+    Trial 60 Complete [00h 00m 12s]
+    val_accuracy: 0.7781955003738403
+
+    Best val_accuracy So Far: 0.7781955003738403
+    Total elapsed time: 00h 05m 36s
+
+Top hyperparameters
+
+    {'activation': 'sigmoid',
+    'first_units': 3,
+    'num_layers': 3,
+    'units_0': 5,
+    'tuner/epochs': 3,
+    'tuner/initial_epoch': 0,
+    'tuner/bracket': 2,
+    'tuner/round': 0,
+    'units_1': 1,
+    'units_2': 1}
+
+### Set up Neural Network for Deep Learning
+
+**Model Architecture**:
+
+Input Layer: Number of Input Features (21)
+
+Hidden Layer 1: 3 nodes, Activation Function: sigmoid
+
+Hidden Layer 2: 5 nodes, Activation Function: sigmoid
+
+Output Layer: 1 node, Activation Function: sigmoid
+
+Number of epochs: 3
+
+    # Define the model - deep neural net, i.e., the number of input features and hidden nodes for each layer.
+    number_input_features = len(X_train_scaled[0])
+    hidden_nodes_layer1 =  5
+    hidden_nodes_layer2 = 1
+
+    nn = tf.keras.models.Sequential()
+
+    # First hidden layer
+    nn.add(tf.keras.layers.Dense(units=hidden_nodes_layer1, input_dim=number_input_features, activation="sigmoid"))
+
+    # Second hidden layer
+    nn.add(tf.keras.layers.Dense(units=hidden_nodes_layer2, activation="sigmoid"))
+
+    # Output layer
+    nn.add(tf.keras.layers.Dense(units=1, activation="sigmoid"))
+
+    # Check the structure of the model
+    nn.summary()
+
+Model Description
+
+    Model: "sequential"
+    _________________________________________________________________
+    Layer (type)                Output Shape              Param #   
+    =================================================================
+    dense (Dense)               (None, 5)                 110       
+                                                                    
+    dense_1 (Dense)             (None, 1)                 6         
+                                                                    
+    dense_2 (Dense)             (None, 1)                 2         
+                                                                    
+    =================================================================
+    Total params: 118 (472.00 Byte)
+    Trainable params: 118 (472.00 Byte)
+    Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+
+Compile the model 
+
+    nn.compile(loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"])
+
+Train the model
+
+    fit_model = nn.fit(X_train_scaled, y_train, epochs=3)
+
+Evaluate the model using the test data
+
+    model_loss, model_accuracy = nn.evaluate(X_test_scaled,y_test,verbose=2)
+    print(f"Loss: {model_loss}, Accuracy: {model_accuracy}")
+
+    Output:
+
+    17/17 - 0s - loss: 0.0000e+00 - accuracy: 0.7744 - 310ms/epoch - 18ms/step
+    Loss: 0.0, Accuracy: 0.7744361162185669
+
+The top model in Keras hypertuner has an accuracy of 77.44%
+
+## Summary of Findings
 
 
 

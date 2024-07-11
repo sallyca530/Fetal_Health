@@ -42,6 +42,8 @@ What's in the data?
     dtypes: float64(22)
     memory usage: 365.5 KB
 
+![](images/Class_distribution.png)
+
 ![](images/correlation.png)
 
 ## Unsupervised Learning
@@ -99,8 +101,7 @@ Imports
     pca.explained_variance_ratio_
 
     Output: array([0.27553613, 0.16673811, 0.10405716])
-
-### Since the variance is so low, around 59%, other machine learning tools should be used.
+**Since the variance is so low, around 59%, other machine learning tools should be used.**
 
 ## Supervised Learning
 
@@ -178,8 +179,65 @@ Print the classification report.
 It is shown that in the confusion matrix the normal (1.0) and pathological (3.0) data is highly predictive, while in the suspect (2.0) fails to be predictive. The accuracy score is 85% and is a good estimate of the preformance of this model, the confusion matrix shows that only the normal and pathological samples should have a higher confidence of accuracy, not the suspect samples. Meanwhile, the classification report shows in greater detail the percentages of precision, recall, and f1-scores can be most trusted in the normal samples at 96%, while the pathological samples are the next to be trusted at 71%. On the other hand, the suspect samples are should to not be trusted with the f1-score being below 50%.
 
 
-
 ## Deep Learning and Optimizations
+
+### Using Tensorflow and Keras, find the best hyperparameters 
+
+Imports
+
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
+import kerastuner as kt
+import tensorflow as tf
+from tensorflow.keras.models import Sequential
+
+Split our preprocessed data into our features and target arrays
+
+    y = fetal_health_df['fetal_health']
+    X = fetal_health_df.drop(['fetal_health'], axis = 1)
+
+    # Create a StandardScaler instances
+    scaler = StandardScaler()
+
+    # Fit the StandardScaler
+    X_scaler = scaler.fit(X_train)
+
+    # Scale the data
+    X_train_scaled = X_scaler.transform(X_train)
+    X_test_scaled = X_scaler.transform(X_test)
+
+Create a method that creates a new Sequential model with hyperparameter options
+
+    def create_model(hp):
+        nn_model = tf.keras.models.Sequential()
+
+        # Allow kerastuner to decide which activation function to  use in hidden layers
+        activation = hp.Choice('activation',['relu','tanh','sigmoid'])
+
+        # Allow kerastuner to decide number of neurons in first layer
+        nn_model.add(tf.keras.layers.Dense(units=hp.Int('first_units',
+            min_value=1,
+            max_value=10,
+            step=2), activation=activation, input_dim=21))
+
+        # Allow kerastuner to decide number of hidden layers and neurons in hidden layers
+        for i in range(hp.Int('num_layers', 1, 6)):
+            nn_model.add(tf.keras.layers.Dense(units=hp.Int('units_' + str(i),
+                min_value=1,
+                max_value=10,
+                step=2),
+                activation=activation))
+
+        nn_model.add(tf.keras.layers.Dense(units=1, activation="sigmoid"))
+
+        # Compile the model
+        nn_model.compile(loss="categorical_crossentropy", optimizer='adam', metrics=["accuracy"])
+
+        return nn_model
+
+
+
 
 
 ### Resources

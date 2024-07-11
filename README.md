@@ -175,7 +175,7 @@ Print the classification report.
 
 ![](images/Classification_Report.png) 
 
-
+It is shown that in the confusion matrix the normal (1.0) and pathological (3.0) data is highly predictive, while in the suspect (2.0) fails to be predictive. The accuracy score is 85% and is a good estimate of the preformance of this model, the confusion matrix shows that only the normal and pathological samples should have a higher confidence of accuracy, not the suspect samples. Meanwhile, the classification report shows in greater detail the percentages of precision, recall, and f1-scores can be most trusted in the normal samples at 96%, while the pathological samples are the next to be trusted at 71%. On the other hand, the suspect samples are should to not be trusted with the f1-score being below 50%.
 
 
 

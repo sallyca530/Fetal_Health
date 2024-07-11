@@ -185,12 +185,12 @@ It is shown that in the confusion matrix the normal (1.0) and pathological (3.0)
 
 Imports
 
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-from sklearn.cluster import KMeans
-import kerastuner as kt
-import tensorflow as tf
-from tensorflow.keras.models import Sequential
+    from sklearn.model_selection import train_test_split
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.cluster import KMeans
+    import kerastuner as kt
+    import tensorflow as tf
+    from tensorflow.keras.models import Sequential
 
 Split our preprocessed data into our features and target arrays
 
@@ -337,11 +337,21 @@ Evaluate the model using the test data
     17/17 - 0s - loss: 0.0000e+00 - accuracy: 0.7744 - 310ms/epoch - 18ms/step
     Loss: 0.0, Accuracy: 0.7744361162185669
 
-The top model in Keras hypertuner has an accuracy of 77.44%
+**The top model in Keras hypertuner has an accuracy of 77.44%**
+
+
 
 ## Summary of Findings
 
+Upon the initial exploratory data analysis, the data is highly skewed. Of the entire dataset consisting of 2113 records, 77.85% is of normal fetal health, 13.88% of suspect fetal health, and 8.28% of pathological fetal health. That notwithstanding, further machine learning analysis was done to find the best predictive models. 
 
+Unsupervised learning was implemented first. K-means was applied to find the clustering patterns. Upon further inspection, the clustering was not enough to gain important information. Next, principal component analysis was applied to the dataset and quickly the finding was shown to only include variance ratio of 59%. This figure was too low to proceed further.
+
+Next, supervised machine learning was used to investigate the dataset to learn if predictive models could be used to help determine fetal health. Using logistic regression, the data was trained and a confusion matrix, accuracy score, and classification report was generated. As previously mentioned in the analysis above, the skewed data makes it is hard to have a highly predictive model. The normal samples generated a highly predictive model, but this may be because there was a significant more data-points. Next, the pathological samples had the next highest predictive model, but it was still below 75%, so not incredibly resilient. And lastly, the suspect samples failed in this model, with an f1-score below 50%. 
+
+Finally, deep learning was implemented to find if this model could generate a predictive model. First, using TensonFlow and Keras, the generation of the best hyperparameters was implemented. Next the the top model was used. The result was a neural network that generated an accuracy of 77.44%. While this is not the greatest outcome, it seems the most promising for classification for all fetal health states. 
+
+Further work should include gathering more data on the suspect and pathological fetal health states. Until this data is generally more even in its variance, this models will struggle to accurately generate predictions that could improve health professionals' decisions in determining the fetal health during a woman's pregnancy.
 
 
 ### Resources

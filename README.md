@@ -92,8 +92,7 @@ Imports
     # Create a PCA model instance and set `n_components=3`.
     pca = PCA(n_components=3)
 
-    # Use the PCA model with `fit_transform` to reduce to 
-    # three principal components.
+    # Use the PCA model with `fit_transform` to reduce to three principal components.
     un_pca_data = pca.fit_transform(un_sup_df_scaled)
 
 ### Retrieve the explained variance to determine how much information can be attributed to each principal component.
@@ -106,6 +105,19 @@ Imports
 
 ## Supervised Learning
 
+Imports
+
+    # Import the modules
+    import numpy as np
+    import pandas as pd
+    from pathlib import Path
+    from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
+    # Import the train_test_learn module
+    from sklearn.model_selection import train_test_split
+    # Import the LogisticRegression module from SKLearn
+    from sklearn.linear_model import LogisticRegression
+
+
 Create the labels set (y)  from the “fetal_health” column, and then create the features (X) DataFrame from the remaining columns.
 
     # Separate the y variable, the labels
@@ -113,6 +125,58 @@ Create the labels set (y)  from the “fetal_health” column, and then create t
 
     # Separate the X variable, the features
     X = df.drop(columns="fetal_health")
+
+### Fetal Health is defined by Normal = 1.0, Suspect = 2.0, Pathological = 3.0
+
+Split the data into training and testing datasets by using `train_test_split`.
+
+    # Split the data using train_test_split
+    # Assign a random_state of 1 to the function
+    X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=1)
+
+### Logistic Model
+
+    # LogisticRegression module 
+
+    # Instantiate the Logistic Regression model
+    # Assign a random_state parameter of 1 to the model
+    classifier = LogisticRegression(random_state=1)
+
+    # Fit the model using training data
+    log_model = classifier.fit(X_train, y_train)
+
+    # Make a prediction using the testing data
+    predictions = log_model.predict(X_test)
+
+### Evaluate the model’s performance by doing the following:
+
+Generate a confusion matrix for the model
+
+Calculating the accuracy score
+
+Print the classification report.  
+
+    # Generate Confusion Matrix
+    cm = confusion_matrix(y_test, predictions)
+    cm_df = pd.DataFrame(
+        cm, 
+        index=["Actual 0", "Actual 1", "Actual 2"], 
+        columns=["Predicted 0", "Predicted 1", "Predicted 2"]
+         )
+
+    #Generate Accuracy Score
+    acc_score = accuracy_score(y_test, predictions)
+
+    # Displaying results
+    print("Confusion Matrix")
+    display(cm_df)
+    print(f"Accuracy Score : {acc_score}")
+    print("Classification Report")
+    print(classification_report(y_test, predictions))
+
+![](images/Classification_Report.png) 
+
+
 
 
 

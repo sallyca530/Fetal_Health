@@ -361,4 +361,3 @@ https://onlinelibrary.wiley.com/doi/10.1002/1520-6661(200009/10)9:5%3C311::AID-M
 
 https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10000592/#:~:text=To%20date%2C%20cardiotocography%20(CTG),a%20challenging%20signal%20processing%20task.
 
-low variance - https://stats.stackexchange.com/questions/584174/interpretation-of-low-variance-in-pca
